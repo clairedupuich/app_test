@@ -1,56 +1,72 @@
-name: API Tests // Tests d'API / API自动化测试
+name: Backend API Tests
 
 on:
   push:
-    branches: [ main ] #在 main 分支推送时触发
+    branches: [ main ]
   pull_request:
-    branches: [ main ] # 在 main 分支发起拉取请求时触发
-  schedule:
-    - cron: '0 8 * * *'  # Tous les jours à 8h / 每天早上8点自动执行一次
+    branches: [ main ]
 
 jobs:
-  test-api:
-    runs-on: ubuntu-latest #在最新的Ubuntu环境中运行
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
 
     steps:
-    - name: Checkout code  # 检出代码
-      uses: actions/checkout@v3
+      # Step 1️⃣ 拉取代码
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js #设置Node.js环境
-      uses: actions/setup-node@v3
-      with:
-        node-version: '18' # Node版本
+      # Step 2️⃣ 设置 Node.js 环境
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
-    - name: Install dependencies # 安装依赖
-      run: npm ci
+      # Step 3️⃣ 安装依赖
+      - name: Install dependencies
+        run: npm install
 
-    - name: Start API server # 启动API服务器
-      run: |                 #下面两行分别为 后台启动服务器 和 等待5秒确保服务启动
-        npm start &       
-        sleep 10       
+      # Step 4️⃣ 启动后端服务
+      - name: Start backend server
+        run: npm start &
+        env:
+          PORT: 5000
 
-    - name: Run Newman tests # 运行Newman API测试
-      env:
-       BASE_URL: http://localhost:3000
-      run: |
-       echo "Using base URL: $BASE_URL"
-       npx newman run ./newman_test/collection.json \
-         --environment ./newman_test/environment.json \
-         --env-var "baseUrl=${BASE_URL}" \
-         -r htmlextra --reporter-htmlextra-export ./newman_test/reports/gestionItems.html \
-         || echo "Newman tests failed but continuing workflow"
-   
-    
+      # Step 5️⃣ 等待 API 服务启动
+      - name: Wait for server to be ready
+        run: |
+          echo "⏳ Waiting for http://localhost:5000 ..."
+          for i in {1..10}; do
+            if curl -s http://localhost:5000 > /dev/null; then
+              echo "✅ Server is ready!"
+              exit 0
+            fi
+            echo "Still waiting..."
+            sleep 3
+          done
+          echo "❌ Server did not start in time." && exit 1
 
-    - name: Upload test report #上传测试报告
-      if: always()
-      uses: actions/upload-artifact@v4  #更新到v4版本
-      with:
-        name: newman-report
-        path: ./newman_test/reports/gestionItems.html #测试报告的真实路径
+      # Step 6️⃣ 执行 Postman / Newman API 测试
+      - name: Run Newman tests
+        run: |
+          mkdir -p reports
+          npx newman run ./postman/prof_collection.json \
+            --environment ./postman/prof_environment.json \
+            -r htmlextra \
+            --reporter-htmlextra-export ./reports/api-test-report.html
 
-    - name: Notify on failure #测试失败时通知
-      if: failure()
-      run: |                                            #测试失败，请查看报告 # 联系邮箱
-        echo "Tests échoués ! Consultez les rapports."   
-        echo "Contact: clairedupuich6@gmail.com"        
+      # Step 7️⃣ 上传报告为 GitHub Artifact（可在 Actions 页面下载）
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-test-report
+          path: reports/api-test-report.html
+
+      # Step 8️⃣ 自动发布报告到 GitHub Pages
+      - name: Deploy test report to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./reports
+          publish_branch: gh-pages
+          keep_files: false
