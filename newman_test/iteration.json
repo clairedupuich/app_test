@@ -1,0 +1,19 @@
+[
+    {
+        "email": "iteration_1@gmll.com",
+        "password":"145212",
+         "emaiTochange": "newemail_1@gmail.com",   
+        "__comment": "这行是注释，上面的emaiTochange只针对postman中的update更新信息request."
+    },
+    {
+        "email": "iteration_2@gmll.com",
+        "password":"145212",
+        "emaiTochange": "newemail_2@gmail.com"
+
+    },
+    {
+        "email": "iteration_3@gmll.com",
+        "password":"145212",
+        "emaiTochange": "newemail_3@gmail.com"
+    }
+]

@@ -1,0 +1,9 @@
+  1 新建文件夹并用vs打开。git初始化后 可选，这是为了后期链接到自己的github仓库。 克隆目标项目。关闭vs，进入新文件夹找到克隆的项目并vs打开。
+2 cd .\newman_test\
+3 newman run 'collection.json' -e 'environment.json'
+
+   
+9 newman run 'collection.json' -e 'environment.json' -r htmlextra --reporter-htmlextra-export "./reports/gestionProfil.html"
+
+一定要修改完postman中相关request的body数据后再运行。
+10  newman run 'collection.json' -e 'environment.json' -r htmlextra --reporter-htmlextra-export "./reports/gestionProfil.html" --iteration-data ".\iteration.json"

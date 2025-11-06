@@ -1,0 +1,477 @@
+{
+	"info": {
+		"_postman_id": "f0be7660-6259-4c30-a751-5040331e47a0",
+		"name": "API REST",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "49499368",
+		"_collection_link": "https://clairedupuich9-4388317.postman.co/workspace/Claire-Dupuich's-Workspace~7bf9e952-3981-4c9a-8f68-c856e001f3f0/collection/49499368-f0be7660-6259-4c30-a751-5040331e47a0?action=share&source=collection_link&creator=49499368"
+	},
+	"item": [
+		{
+			"name": "Register",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"let responseData = pm.response.json();\r",
+							"pm.environment.set(\"OTP\", responseData.otp);\r",
+							"pm.environment.set(\"email\", responseData.email);\r",
+							"  \r",
+							"\r",
+							"//Vérifier que le code de retour HTTP est 200.\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"//Vérifier que la réponse est au format JSON.\r",
+							"pm.test(\"Response is JSON\", function () {  \r",
+							"    pm.response.to.be.json;\r",
+							"});\r",
+							"\r",
+							"//3 Vérifier que le corps de la réponse contient les clés 'msg' et 'otp'.\r",
+							"pm.test(\"Response contains 'msg' and 'otp'\", function () {\r",
+							"    pm.expect(pm.response.json()).to.have.property('msg');\r",
+							"    pm.expect(pm.response.json()).to.have.property('otp');\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " { \"email\": \"claire_1@gmail.com\",\r\n  \"password\": \"123456\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/auth/register",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "verifier OTP",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"\r",
+							"// Vérifier que le code de retour est 200.\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"//Vérifier que la réponse contient les clés 'msg'.\r",
+							"// pm.test(\"Response contains the correct keys\", function () {\r",
+							"//     pm.expect(jsonData).to.have.keys('msg');\r",
+							"//     });\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": " { \"email\": \"{{email}}\",\r\n    \"otp\":\"{{OTP}}\"\r\n  \r\n   }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/auth/verify-otp",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"verify-otp"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"// pm.environment.set(\"userId\", jsonData.user.id);\r",
+							"pm.environment.set(\"token\", jsonData.token);\r",
+							"\r",
+							"\r",
+							"//Vérifier que le code de retour HTTP est 200.\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "  { \"email\": \"{{email}}\",\r\n    \"password\": \"123456\" \r\n  }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/auth/login",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get  Profils",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"//Vérifier que le code HTTP est 200.\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"  "
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/auth/profile",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Profile",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"response Json\", function(){\r",
+							"    pm.response.to.be.json;\r",
+							"})\r",
+							"//Vérifier que la réponse HTTP renvoie 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"//Vérifier que le message de la réponse est \"User profile updated successfully\"\r",
+							"pm.test(\"Response message is correct\", function () {\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"User profile updated successfully\");\r",
+							"});\r",
+							"\r",
+							"const body = pm.response.json();\r",
+							"\r",
+							"if(pm.response.code === 401){\r",
+							"    pm.test(\"token non fourni\",function(){\r",
+							"        pm.expect(body.message).to.eql(\"Token non fourni\");\r",
+							"    })\r",
+							"} else if (pm.response.code === 201) {\r",
+							"    pm.test(\"la valeur de la cle est correct\",function(){\r",
+							"        pm.expect(body.message).to.eql(\"User profile updated successfully\");\r",
+							"    });\r",
+							"};"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"email\": \"newemail@gmail.com\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/auth/profile",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Supprimer utilisateur",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"\r",
+							"//Vérifier que la réponse HTTP renvoie 200\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"//Vérifier que le message de la réponse est \"User profile updated successfully\"\r",
+							"pm.test(\"Response message is correct\", function () {\r",
+							"    pm.expect(pm.response.json().message).to.eql(\"User profile updated successfully\");\r",
+							"});\r",
+							"\r",
+							"const body = pm.response.json();\r",
+							"\r",
+							"if(pm.response.code === 401){\r",
+							"    pm.test(\"token non fourni\",function(){\r",
+							"        pm.expect(body.message).to.eql(\"Token non fourni\");\r",
+							"    })\r",
+							"} else if (pm.response.code === 201) {\r",
+							"    pm.test(\"la valeur de la cle est correct\",function(){\r",
+							"        pm.expect(body.message).to.eql(\"User profile updated successfully\");\r",
+							"    });\r",
+							"};"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"societe\":\"{{changesociete}}\"\r\n   \r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/auth/profile",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"profile"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get All Users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"const jsonData = pm.response.json();\r",
+							"\r",
+							"\r",
+							"//Vérifier que le code de retour HTTP est 200.\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"// Vérifier que la réponse est un tableau JSON.\r",
+							"pm.test(\"Response is a JSON array\", function () {\r",
+							"    pm.expect(jsonData).to.be.an('array');\r",
+							"});\r",
+							"\r",
+							"// Vérifier que chaque utilisateur possède les champs 'email' et 'verified'\r",
+							"pm.test(\"Each user has 'email' and 'verified' fields\", function () {\r",
+							"    jsonData.forEach(user => {\r",
+							"        pm.expect(user).to.have.property('email');\r",
+							"        pm.expect(user).to.have.property('verified');\r",
+							"    });\r",
+							"});\r",
+							"// Tester un appel sans token ou avec un token non admin et vérifier le code 403\r",
+							"pm.test(\"Status code is 403 when no token or invalid token is provided\", function () {\r",
+							"    pm.expect(pm.response.code).to.equal(403);\r",
+							"});\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer {{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": " { \"email\": \"claire@gmail.com\",\r\n  \"password\": \"123456\" }",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BASE_URL}}/api/auth/users",
+					"host": [
+						"{{BASE_URL}}"
+					],
+					"path": [
+						"api",
+						"auth",
+						"users"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"value": ""
+		}
+	]
+}

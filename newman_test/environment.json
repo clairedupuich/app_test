@@ -1,0 +1,33 @@
+{
+	"id": "18cdaf32-1913-478f-8c35-f781637fda45",
+	"name": "API REST",
+	"values": [
+		{
+			"key": "BASE_URL",
+			"value": "http://localhost:5000",
+			"type": "default",
+			"enabled": true
+		},
+		{
+			"key": "token",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "OTP",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "email",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-11-06T09:39:49.483Z",
+	"_postman_exported_using": "Postman/11.70.2"
+}
