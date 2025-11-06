@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "test:api": "newman run './postman/prof_collection.json' -e './postman/prof_environment.json'",
     "test:api:report": "newman run './postman/prof_collection.json' -e './postman/prof_environment.json' -r htmlextra --reporter-htmlextra-export './reports/gestionProfil.html'",
     "test:api:report:iteration": "newman run './postman/prof_collection.json' -e './postman/prof_environment.json' -r htmlextra --reporter-htmlextra-export './reports/gestionProfil.html' --iteration-data './postman/iteration.json'"

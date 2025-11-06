@@ -22,7 +22,7 @@ jobs:
           node-version: '18'
 
       # Step 3️⃣ 安装依赖
-      - name: Installation des dependencies
+      - name: Installation des dependencies (librairies)
         run: npm install
 
       # Step 4️⃣ 启动后端服务
@@ -32,22 +32,25 @@ jobs:
           sleep 5
       
       # Step 5️⃣ 安装newman和相关报告依赖
-      - name: Install newman et HTML report
+      - name: Install des devDependencies (newman et HTML report ) 
         run: npm install -g newman-reporter-htmlextra
         
       
       # Step 6️⃣ 执行 Postman / Newman API 测试
-      - name: Run Newman tests
+      - name: Lancement de Newman
         run: |
-          mkdir -p reports
           npx newman run ./postman/prof_collection.json \
             --environment ./postman/prof_environment.json \
             -r htmlextra \
             --reporter-htmlextra-export ./reports/api-test-report.html
 
-      # # Step 7️⃣ 上传报告为 GitHub Artifact（可在 Actions 页面下载）
-      # - name: Upload HTML report
-      #   uses: actions/upload-artifact@v4
-      #   with:
-      #     name: api-test-report
-      #     path: reports/api-test-report.html
+      # Step 7️⃣ 上传报告为 GitHub Artifact（可在 Actions 页面下载）
+      - name: upload HTML test report as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: newman-test-report
+          path: reports/RapportNewman.html
+      - name: Add HTML report link
+        run: |
+          echo "### Rapport newman generé" >> $GITHUB_STEP_SUMMARY
+          echo "Telecharger le rapport depuis la section **Artifacts -> newman-test-report**" >> $GITHUB_STEP_SUMMARY
